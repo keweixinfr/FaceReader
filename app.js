@@ -4,6 +4,8 @@ var fs = require('fs');
 var multer = require('multer')
 app.use(express.static('client'));
 
+const port			= process.env.PORT || 4242;
+
 // Multer storage options
 var storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -51,6 +53,6 @@ app.post('/upload', upload.single('image'), function(req, res, next){
     
 });
 
-app.listen(3000, function () {
+app.listen(port, function () {
   console.log('App listening on port 3000!');
 });
