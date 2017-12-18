@@ -3,6 +3,7 @@ var app = express();
 var fs = require('fs');
 var multer = require('multer')
 app.use(express.static('client'));
+var process = require("process");
 
 const port			= process.env.PORT || 4242;
 
