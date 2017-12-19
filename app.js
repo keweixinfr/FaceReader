@@ -46,8 +46,15 @@ app.post('/upload', upload.single('image'), function(req, res, next){
 		}
 		else{
 		    console.log(JSON.stringify(response, null, 2));
-			var result = response["images"][0]["classifiers"][0]["classes"][0]["class"]
-			res.send(result);
+		    var result = response["images"][0]["classifiers"]
+		    if (result.length>0)
+		    {
+				var resultname = result[0]["classes"][0]["class"]
+			}
+			else{
+				var resultname = "Personne"
+			}
+			res.send(resultname);
 		}
 	});
 
