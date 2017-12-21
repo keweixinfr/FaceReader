@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var fs = require('fs');
 var multer = require('multer')
+// var gm = require('gm').subClass({imageMagick: true});
+
 app.use(express.static('client'));
 var process = require("process");
 var im = require("imagemagick"); 
@@ -33,61 +35,57 @@ app.get('/', function (req, res) {
 });
 
 app.post('/upload', upload.single('image'), function(req, res, next){
-    // try{
-    //     im.crop({
-    //           srcPath: 'test.jpg',
-    //           dstPath: 'testout.jpg',
-    //           width: 800,
-    //           height: 600,
-    //           quality: 1,
-    //           gravity: "North"
-    //     }, function(err, stdout, stderr){
-    //       // foo
+
+
+    // --------------------Imagemagick Version--------------------------------------------
+    try{
+        im.readMetadata(__dirname + "/client/uploads/" + "image.jpg", function(err, metadata){
+            if (err) throw err;
+            console.log('Shot at '+metadata.exif.dateTimeOriginal);
+            res.send("success")
+        })
+    }catch(err){
+        consolo.log(err)
+        res.send(err)
+    }
+
+    // --------------------GM Version--------------------------------------------
+    // gm('./client/uploads/image.jpg')
+    //     .resize(240, 240, '!')
+    //     .write('/client/uploads/imageresized.jpg', function (err) {
+    //         if (err){
+    //             console.log(err);
+    //             res.send(err)
+    //         }else{
+    //             res.sendFile( __dirname + "/client/uploads/imageresized.jpg");
+    //         }
     //     });
-    // }catch(err){
-    //     consolo.log(err)
-    // }
 
-    // -------------------------------------------------------------
+
+// ----------------------Origin Version-------------------------------------------
     // var params = {
-    //   images_file: fs.createReadStream('./client/uploads/image.jpg')
+    //      images_file: fs.createReadStream('./client/uploads/image.jpg'),
+    //      parameters: {
+    //          "classifier_ids":["FaceReader_V2_1730969211"]
+    //      }
     // };
-
-    // visual_recognition.detectFaces(params,
-    //   function(err, response) {
-    //     if (err)
-    //       console.log(err);
-    //     else
-    //       console.log(JSON.stringify(response, null, 2));
-
-    //   });
-
-
-
-// -------------------------------------------------------------------------
-    var params = {
-         images_file: fs.createReadStream('./client/uploads/image.jpg'),
-         parameters: {
-             "classifier_ids":["FaceReader_V2_1730969211"]
-         }
-    };
-    visual_recognition.classify(params, function(err, response) {
-     if (err){
-         console.log(error);
-     }
-     else{
-         console.log(JSON.stringify(response, null, 2));
-         var result = response["images"][0]["classifiers"]
-         if (result.length>0)
-         {
-             var resultname = result[0]["classes"][0]["class"]
-         }
-         else{
-             var resultname = "Personne"
-         }
-         res.send(resultname);
-     }
-    });
+    // visual_recognition.classify(params, function(err, response) {
+    //  if (err){
+    //      console.log(error);
+    //  }
+    //  else{
+    //      console.log(JSON.stringify(response, null, 2));
+    //      var result = response["images"][0]["classifiers"]
+    //      if (result.length>0)
+    //      {
+    //          var resultname = result[0]["classes"][0]["class"]
+    //      }
+    //      else{
+    //          var resultname = "Personne"
+    //      }
+    //      res.send(resultname);
+    //  }
+    // });
 
     
 });
