@@ -41,8 +41,7 @@ app.post('/upload', upload.single('image'), function(req, res, next){
     try{
         im.readMetadata(__dirname + "/client/uploads/" + "image.jpg", function(err, metadata){
             if (err) throw err;
-            console.log('Shot at '+metadata.exif.dateTimeOriginal);
-            res.send("success")
+            res.send('Shot at '+metadata.exif.dateTimeOriginal);
         })
     }catch(err){
         consolo.log(err)
