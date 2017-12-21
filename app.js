@@ -38,16 +38,20 @@ app.post('/upload', upload.single('image'), function(req, res, next){
 
 
     // --------------------Imagemagick Version--------------------------------------------
-    try{
-        im.readMetadata(__dirname + "/client/uploads/" + "image.jpg", function(err, metadata){
-            if (err) throw err;
-            res.send('Shot at '+metadata.exif.dateTimeOriginal);
-        })
-    }catch(err){
-        consolo.log(err)
-        res.send(err)
-    }
-
+    im.crop({
+      srcPath: __dirname + '/client/uploads/image.jpg',
+      dstPath:  __dirname + '/client/uploads/imageresized.jpg',
+      width: 800,
+      height: 600,
+      quality: 1,
+      gravity: "North"
+    }, function(err, stdout, stderr){
+        if(err){
+            console.log(err)
+        }else{
+            console.log('stdout:', stdout);
+        }
+    });
     // --------------------GM Version--------------------------------------------
     // gm('./client/uploads/image.jpg')
     //     .resize(240, 240, '!')
