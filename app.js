@@ -75,7 +75,7 @@ app.post('/upload', upload.single('image'), function(req, res, next){
                             var params = {
                                  images_file: fs.createReadStream('./client/uploads/imageresized.jpg'),
                                  parameters: {
-                                     "classifier_ids":["FaceReader_V2_1730969211"]
+                                     "classifier_ids":["FaceReader_V3_1454551190"]
                                  }
                             };
                             visual_recognition.classify(params, function(error_classify, IBMresponse) {
