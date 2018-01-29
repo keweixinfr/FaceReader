@@ -4,7 +4,14 @@
 	</head>
 	<body>
 		<form action="/upload" method="post" enctype="multipart/form-data">  
-			Select an image to upload:
+			Select an image to identify:
+			<input type="file" name="image"> 
+			<input type="submit" value="Upload Image">
+		</form>
+	</body>
+	<body>
+		<form action="/detect" method="post" enctype="multipart/form-data">  
+			Select an image to detect face:
 			<input type="file" name="image"> 
 			<input type="submit" value="Upload Image">
 		</form>
