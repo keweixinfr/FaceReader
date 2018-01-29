@@ -52,7 +52,34 @@ app.post('/detect', upload.single('image'), function(req, res, next){
                     console.log(response["images"][0]["error"])
                     faceArray= response["images"][0]["faces"]
                     //TODO: if judgement
-                    res.send(response["images"][0]["error"])
+                    if(faceArray.length){
+                        //if several persons present, chose the first one in the face array
+                        faceLocation =faceArray[0]["face_location"]
+                        
+                        var srcPath = __dirname + '/client/uploads/image.jpg'
+                        var dstPath = __dirname + '/client/uploads/imageresized.jpg'
+                        var x=faceLocation["left"] // topright location : left 2 right
+                        var y=faceLocation["top"]  // topright location : top 2 bottom
+                        var height=faceLocation["height"] // crop size height
+                        var width =faceLocation["width"] // crop size width
+                        var args = [
+                            srcPath,
+                            "-crop",
+                            width+"x"+height+"+"+x+"+"+y,
+                            dstPath
+                        ];
+                        im.convert(args, function(error_crop) {
+                            if(error_crop){
+                                console.log(error_crop)
+                                res.send("Personne")
+                            }else{
+                                res.sendFile( __dirname + "/client/uploads/imageresized.jpg" );
+                            }
+                        });
+                      }
+                      else{
+                        res.send("Personne")
+                    }
                 }catch(err){
                   console.log(err)
                 }
